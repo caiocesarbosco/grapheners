@@ -16,9 +16,29 @@ fn main () {
 
     socket.write_message(Message::Text(stringify(req))).unwrap();
 
-    loop {
-        let msg = socket.read_message().expect("Error reading message");
-        println!("Received: {}", msg);
-    }
+    let msg = socket.read_message().expect("Error reading message");
+    println!("Received: {}", msg);
+
+    let req = object!{
+        method: "call",
+        params: [1, "database", []],
+        id: 2
+    };
+
+    socket.write_message(Message::Text(stringify(req))).unwrap();
+
+    let msg = socket.read_message().expect("Error reading message");
+    println!("Received: {}", msg);
+
+    let req = object!{
+        method: "call",
+        params: [2, "get_chain_id", []],
+        id: 3
+    };
+
+    socket.write_message(Message::Text(stringify(req))).unwrap();
+
+    let msg = socket.read_message().expect("Error reading message");
+    println!("Received: {}", msg);
 
 }
