@@ -1,12 +1,13 @@
-use tungstenite::{connect, Message};
-use url::Url;
-use json::{object, stringify};
+use json::{object};
+use crate::websocket::service::WebSocket;
+use crate::websocket::implementations::tungstenite::Tungstenite;
+
+mod websocket;
 
 fn main () {
 
-    let (mut socket, response) = connect(Url::parse("wss://127.0.0.1:8090").unwrap()).expect("Can't connect");
-
-    println!("Connected: {:?}", response);
+    let mut concrete_ws = Tungstenite::new();
+    let mut ws_service = WebSocket::new(&mut concrete_ws, String::from("wss://127.0.0.1:8090"));
 
     let req = object!{
         method: "call",
@@ -14,10 +15,8 @@ fn main () {
         id: 1
     };
 
-    socket.write_message(Message::Text(stringify(req))).unwrap();
-
-    let msg = socket.read_message().expect("Error reading message");
-    println!("Received: {}", msg);
+    ws_service.send(req);
+    ws_service.receive();
 
     let req = object!{
         method: "call",
@@ -25,10 +24,8 @@ fn main () {
         id: 2
     };
 
-    socket.write_message(Message::Text(stringify(req))).unwrap();
-
-    let msg = socket.read_message().expect("Error reading message");
-    println!("Received: {}", msg);
+    ws_service.send(req);
+    ws_service.receive();
 
     let req = object!{
         method: "call",
@@ -36,9 +33,7 @@ fn main () {
         id: 3
     };
 
-    socket.write_message(Message::Text(stringify(req))).unwrap();
-
-    let msg = socket.read_message().expect("Error reading message");
-    println!("Received: {}", msg);
+    ws_service.send(req);
+    ws_service.receive();
 
 }
