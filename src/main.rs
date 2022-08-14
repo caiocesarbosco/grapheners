@@ -6,8 +6,8 @@ mod websocket;
 
 fn main () {
 
-    let mut concrete_ws = Tungstenite::new();
-    let mut ws_service = WebSocket::new(&mut concrete_ws, String::from("wss://127.0.0.1:8090"));
+    let mut concrete_ws = Tungstenite::new(String::from("wss://127.0.0.1:8090"));
+    let mut ws_service = WebSocket::new(&mut concrete_ws);
 
     let req = object!{
         method: "call",

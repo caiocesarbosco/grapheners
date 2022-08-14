@@ -2,14 +2,13 @@ use crate::websocket::interface::IWebSocket;
 use json::{JsonValue};
 
 pub struct WebSocket<'a> {
-    socket: &'a mut dyn IWebSocket,
-    url: String
+    socket: &'a mut dyn IWebSocket
 }
 
 impl <'a> WebSocket<'a> {
 
-    pub fn new(socket: &'a mut dyn IWebSocket, url: String) -> Self {
-        Self { socket, url }
+    pub fn new(socket: &'a mut dyn IWebSocket) -> Self {
+        Self { socket }
     }
 
     pub fn connect(&mut self) {

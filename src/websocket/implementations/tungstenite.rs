@@ -9,8 +9,8 @@ pub struct Tungstenite {
 }
 
 impl Tungstenite {
-    pub fn new() -> Self {
-        let (socket, _response) = connect(Url::parse("wss://127.0.0.1:8090").unwrap()).expect("Can't connect");
+    pub fn new(url: String) -> Self {
+        let (socket, _response) = connect(Url::parse(&url).unwrap()).expect("Can't connect");
         Self { socket }
     }
 }
